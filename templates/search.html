@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <link rel='stylesheet' type='text/css'  href="{{ url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <form method='POST' action="{{  url_for('search') }}">
+        <center>
+            <span style="font-size:26px; font-weight:bold; padding-left:20px; padding-right:20px">
+                <input type="submit" value="Get New Stack Overflow Questions" />
+            </span>
+        </center>
+    </form>
+
+
+    <!-- printing all questions -->
+    <form method="GET" action="{{  url_for('search') }}"> 
+        {% if count %}
+                <div class="searchresult">
+                <p style="text-align:left; margin-left:20px; font-size:14px;"> 
+                    <span style="font-weight:bold;">{{ questions_fetched }}</span> Q&A Fetched.</p>
+                    <table id="resulttable" >
+                        <tr>
+                            <th> <span style="padding-left:2px; padding-right:2px"> ID </span></th>
+                            <th> <span style="padding-left:2px; padding-right:2px"> Vote </span></th>
+                            <th> <span style="padding-left:10px; padding-right:10px"> Views </span></th>
+                            <th> <span style="padding-left:10px; padding-right:10px"> Questions </span></th>
+                            <th> <span style="padding-left:10px; padding-right:10px"> Descriptions </span></th>
+                        </tr>
+                        {% for element in data %}
+                            {% for v in element.values() %}
+                                <td>{{ v }}</td>
+                            {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <a href='{{url_for("search")}}'>First</a>&nbsp;&nbsp;&nbsp;
+                    <a href='{{url_for("search")}}'>Prev</a>&nbsp;&nbsp;&nbsp;<a href='{{url_for("search")}}'>Next</a>&nbsp;&nbsp;&nbsp;
+                    <a href='{{url_for("search")}}'>Last</a>&nbsp;&nbsp;&nbsp;
+                </div>
+        {% endif %}      
+    </form>
+</body>
+</html>
