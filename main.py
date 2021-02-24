@@ -5,10 +5,11 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-global res, soup
+global res, soup, prev_page, next_page, page_count
 soup = ''
-
-
+prev_page = 0
+next_page = 0
+page_count = 0
 
 @app.route('/')
 def index():
@@ -17,8 +18,9 @@ def index():
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
-    global soup
+    global soup, page_count
     get_question = []
+    page_count += 1
     res = requests.get("https://stackoverflow.com/questions")
     soup = BeautifulSoup(res.text, 'html.parser')
     questions = soup.select(".question-summary")
@@ -40,8 +42,11 @@ def search():
 
 @app.route('/next', methods=['POST', 'GET'])
 def nextpage():
-    global soup
+    global soup, page_count
     get_question = []
+    url = "https://stackoverflow.com/questions?tab=newest&page="+page_count
+    res = requests.get("https://stackoverflow.com/questions")
+    soup = BeautifulSoup(res.text, 'html.parser')
     next_questions = soup.select(".question-summary")
     count = 0
     for que in next_questions:
